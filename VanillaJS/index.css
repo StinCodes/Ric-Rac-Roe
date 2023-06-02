@@ -149,12 +149,36 @@ body {
   cursor: pointer;
 }
 
+/* Gameboard */
 .square {
-  background-color: red;
+  background-color: var(--gray);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+}
+.square:hover{
+  cursor: pointer;
+  opacity: 80%;
 }
 
+/* Scoreboard */
 .score {
-  background-color: blue;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+.score p{
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.score span{
+  font-size: 12px;
+  margin-top: 2px;
 }
 
 /* footer styling */
