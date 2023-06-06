@@ -7,6 +7,9 @@ const App = {
     newRoundBtn: document.querySelector('[data-id= "new-round-btn"]'),
     squares: document.querySelectorAll('[data-id= "square"]'),
   },
+  state:{
+    currentPlayer: 1,
+  },
   init() {
     App.registerEventListeners();
   },
@@ -22,10 +25,25 @@ const App = {
     });
     App.$.squares.forEach((square) => {
       square.addEventListener("click", (event) => {
-        console.log(`Square with id ${event.target.id} was clicked`);
+        // console.log(`Square with id ${event.target.id} was clicked`);
+        // console.log(`Current player is ${App.state.currentPlayer}`)
+
+        if(square.hasChildNodes()){
+          return
+        }
+
+        const currentPlayer = App.state.currentPlayer
         const icon = document.createElement('i')
-        icon.classList.add('fa-solid', 'fa-x', 'yellow')
-        event.target.replaceChildren(icon)
+        if(currentPlayer === 1){
+          icon.classList.add('fa-solid', 'fa-x', 'yellow')
+        }else{
+          icon.classList.add('fa-solid', 'fa-o', 'turquoise')
+        }
+
+        //if current player is equal to 1, change to 2
+        App.state.currentPlayer = App.state.currentPlayer === 1 ? 2 : 1
+
+        square.replaceChildren(icon)
         // <i class="fa-solid fa-x yellow"></i>
         // <i class="fa-solid fa-o turquoise"></i>
       });
