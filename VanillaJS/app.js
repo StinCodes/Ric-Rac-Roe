@@ -7,8 +7,8 @@ const App = {
     newRoundBtn: document.querySelector('[data-id= "new-round-btn"]'),
     squares: document.querySelectorAll('[data-id= "square"]'),
   },
-  state:{
-    currentPlayer: 1,
+  state: {
+    moves: [],
   },
   init() {
     App.registerEventListeners();
@@ -28,24 +28,51 @@ const App = {
         // console.log(`Square with id ${event.target.id} was clicked`);
         // console.log(`Current player is ${App.state.currentPlayer}`)
 
-        if(square.hasChildNodes()){
-          return
+        //check there is a move in square, if so return early (prevents multiple X/O in 1 square)
+        const hasMove = (squareId) => {
+          const existingMove = App.state.moves.find(
+            (move) => move.squareId === squareId
+          );
+          return existingMove !== undefined;
+        };
+        if (hasMove(+square.id)) {
+          return;
         }
 
-        const currentPlayer = App.state.currentPlayer
-        const icon = document.createElement('i')
-        if(currentPlayer === 1){
-          icon.classList.add('fa-solid', 'fa-x', 'yellow')
-        }else{
-          icon.classList.add('fa-solid', 'fa-o', 'turquoise')
+        // Determine which player icon to add to square
+        const lastMove = App.state.moves.at(-1);
+        const getOppositePlayer = (playerId) => (playerId === 1 ? 2 : 1);
+
+        const currentPlayer =
+          App.state.moves.length === 0
+            ? 1
+            : getOppositePlayer(lastMove.playerId);
+
+        const icon = document.createElement("i");
+        if (currentPlayer === 1) {
+          icon.classList.add("fa-solid", "fa-x", "yellow");
+        } else {
+          icon.classList.add("fa-solid", "fa-o", "turquoise");
         }
 
-        //if current player is equal to 1, change to 2
-        App.state.currentPlayer = App.state.currentPlayer === 1 ? 2 : 1
+        App.state.moves.push({
+          squareId: +square.id,
+          playerId: currentPlayer,
+        });
 
-        square.replaceChildren(icon)
-        // <i class="fa-solid fa-x yellow"></i>
-        // <i class="fa-solid fa-o turquoise"></i>
+        square.replaceChildren(icon);
+
+        //Check for winner or tie
+        const winningPatterns = [
+          [1, 2, 3],
+          [1, 5, 9],
+          [1, 4, 7],
+          [2, 5, 8],
+          [3, 5, 7],
+          [3, 6, 9],
+          [4, 5, 6],
+          [7, 8, 9],
+        ];
       });
     });
   },
