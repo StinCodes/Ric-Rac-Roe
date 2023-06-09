@@ -6,6 +6,9 @@ const App = {
     resetBTN: document.querySelector('[data-id="reset-btn"]'),
     newRoundBtn: document.querySelector('[data-id= "new-round-btn"]'),
     squares: document.querySelectorAll('[data-id= "square"]'),
+    modal: document.querySelector('[data-id= "modal"]'),
+    modalText: document.querySelector('[data-id= "modal-text"]'),
+    modalBtn: document.querySelector('[data-id= "modal-btn"]'),
   },
   state: {
     moves: [],
@@ -78,10 +81,10 @@ const App = {
           return;
         }
 
-        // Determine which player icon to add to square
+        // Determine which player icon to add to square, check who moved last
         const lastMove = App.state.moves.at(-1);
         const getOppositePlayer = (playerId) => (playerId === 1 ? 2 : 1);
-
+        //Set current player turn
         const currentPlayer =
           App.state.moves.length === 0
             ? 1
@@ -104,14 +107,23 @@ const App = {
         //Check for winner or tie
         const game = App.getGameStatus(App.state.moves);
         if(game.status === 'Complete'){
+          App.$.modal.classList.remove('hidden')
+          let message = ''
           if(game.winner){
-            alert(`Player ${game.winner} wins!`)
+            message = `Player ${game.winner} wins!`
+
           }else{
-            alert('Game ends in a tie!')
+            message = `The game ends in a tie!`
           }
+          App.$.modalText.textContent = message
         }
       });
     });
+    App.$.modalBtn.addEventListener('click', (event)=>{
+      App.state.moves = []
+      App.$.squares.forEach((square)=>square.replaceChildren())
+      App.$.modal.classList.add('hidden')
+    })
   },
 };
 
