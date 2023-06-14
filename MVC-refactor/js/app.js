@@ -157,7 +157,6 @@ function init(){
     console.log('Player move event')
     console.log(event)
   })
-  console.log(view.$.turn)
 }
 
 window.addEventListener("load", init);
