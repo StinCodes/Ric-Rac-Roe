@@ -14,10 +14,11 @@ export default class View {
 
     //UI only (view) event listeners
     this.$.menu.addEventListener("click", () => {
-      this.$.menuItems.classList.toggle("hidden");
+      this.toggleMenu()
     });
   }
 
+  // Register all event listeners
   bindGameResetEvent(handler) {
     this.$.resetBtn.addEventListener("click", handler);
   }
@@ -28,5 +29,14 @@ export default class View {
     this.$.squares.forEach((square) => {
       square.addEventListener("click", handler);
     });
+  }
+  //DOM helper methods
+  toggleMenu(){
+    this.$.menuItems.classList.toggle("hidden");
+    this.$.menuBtn.classList.toggle('border')
+
+    const icon = this.$.menuBtn.querySelector('i')
+    icon.classList.toggle('fa-chevron-down')
+    icon.classList.toggle('fa-chevron-up')
   }
 }
