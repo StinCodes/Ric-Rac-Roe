@@ -1,4 +1,4 @@
-import View from "./view.js"
+import View from "./view.js";
 
 const App = {
   //all of selected html elements
@@ -92,24 +92,24 @@ const App = {
           App.state.moves.length === 0
             ? 1
             : getOppositePlayer(lastMove.playerId);
-        const nextPlayer = getOppositePlayer(currentPlayer)
+        const nextPlayer = getOppositePlayer(currentPlayer);
 
         const squareIcon = document.createElement("i");
-        const turnIcon = document.createElement('i')
-        const turnLabel = document.createElement('p')
-        turnLabel.innerText = `Player ${nextPlayer} you are up!`
+        const turnIcon = document.createElement("i");
+        const turnLabel = document.createElement("p");
+        turnLabel.innerText = `Player ${nextPlayer} you are up!`;
 
         if (currentPlayer === 1) {
           squareIcon.classList.add("fa-solid", "fa-x", "yellow");
           turnIcon.classList.add("fa-solid", "fa-o", "turquoise");
-          turnLabel.classList = 'turquoise'
+          turnLabel.classList = "turquoise";
         } else {
           squareIcon.classList.add("fa-solid", "fa-o", "turquoise");
           turnIcon.classList.add("fa-solid", "fa-x", "yellow");
-          turnLabel.classList = 'yellow'
+          turnLabel.classList = "yellow";
         }
 
-        App.$.turn.replaceChildren(turnIcon, turnLabel)
+        App.$.turn.replaceChildren(turnIcon, turnLabel);
 
         App.state.moves.push({
           squareId: +square.id,
@@ -120,43 +120,42 @@ const App = {
 
         //Check for winner or tie
         const game = App.getGameStatus(App.state.moves);
-        if(game.status === 'Complete'){
-          App.$.modal.classList.remove('hidden')
-          let message = ''
-          if(game.winner){
-            message = `Player ${game.winner} wins!`
-
-          }else{
-            message = `The game ends in a tie!`
+        if (game.status === "Complete") {
+          App.$.modal.classList.remove("hidden");
+          let message = "";
+          if (game.winner) {
+            message = `Player ${game.winner} wins!`;
+          } else {
+            message = `The game ends in a tie!`;
           }
-          App.$.modalText.textContent = message
+          App.$.modalText.textContent = message;
         }
       });
     });
-    App.$.modalBtn.addEventListener('click', (event)=>{
-      App.state.moves = []
-      App.$.squares.forEach((square)=>square.replaceChildren())
-      App.$.modal.classList.add('hidden')
-    })
+    App.$.modalBtn.addEventListener("click", (event) => {
+      App.state.moves = [];
+      App.$.squares.forEach((square) => square.replaceChildren());
+      App.$.modal.classList.add("hidden");
+    });
   },
 };
 
 // window.addEventListener("load", App.init);
 
-function init(){
-  const view = new View()
-  view.bindGameResetEvent(event =>{
-    console.log('Reset event')
-    console.log(event)
-  })
-  view.bindNewRoundEvent(event =>{
-    console.log('New round event')
-    console.log(event)
-  })
-  view.bindPlayerMoveEvent(event =>{
-    console.log('Player move event')
-    console.log(event)
-  })
+function init() {
+  const view = new View();
+  view.bindGameResetEvent((event) => {
+    console.log("Reset event");
+    console.log(event);
+  });
+  view.bindNewRoundEvent((event) => {
+    console.log("New round event");
+    console.log(event);
+  });
+  view.bindPlayerMoveEvent((event) => {
+    view.setTurnIndicator(2);
+    view.handlePlayerMove(event.target, 1)
+  });
 }
 
 window.addEventListener("load", init);

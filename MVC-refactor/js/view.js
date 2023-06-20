@@ -1,6 +1,6 @@
 export default class View {
   $ = {};
-  $$ = {}
+  $$ = {};
   constructor() {
     this.$.menu = this.#qs('[data-id="menu"]');
     this.$.menuBtn = this.#qs('[data-id ="menu-btn" ]');
@@ -41,6 +41,31 @@ export default class View {
     icon.classList.toggle("fa-chevron-up");
   }
 
+  handlePlayerMove(squareEl, player) {
+    const icon = document.createElement("i");
+    icon.classList.add(
+      "fa-solid",
+      player === 1 ? "fa-x" : "fa-o",
+      player === 1 ? "yellow" : "turquoise"
+    );
+    squareEl.replaceChildren(icon);
+  }
+
+  setTurnIndicator(player) {
+    const icon = document.createElement("i");
+    const label = document.createElement("p");
+    icon.classList.add("fa-solid");
+    icon.classList.add(player === 1 ? "fa-x" : "fa-o");
+
+    this.$.turn.classList.add(player === 1 ? "yellow" : "turquoise");
+    this.$.turn.classList.remove(player === 1 ? "turquoise" : "yellow");
+
+    label.innerText =
+      player === 1 ? "Player 1, you are up" : "Player 2, you are up";
+
+    this.$.turn.replaceChildren(icon, label);
+  }
+
   //QuerySelector function to refactor constructor to use this.qs
   //# makes the function a private function in the view class
   #qs(selector, parent) {
@@ -54,7 +79,7 @@ export default class View {
   }
 
   #qsAll(selector) {
-    const elList = document.querySelectorAll(selector)
+    const elList = document.querySelectorAll(selector);
 
     if (!elList) {
       throw new Error("Could not find elements");
