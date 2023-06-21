@@ -43,25 +43,19 @@ export default class View {
 
   handlePlayerMove(squareEl, player) {
     const icon = document.createElement("i");
-    icon.classList.add(
-      "fa-solid",
-      player === 1 ? "fa-x" : "fa-o",
-      player === 1 ? "yellow" : "turquoise"
-    );
+    icon.classList.add("fa-solid", player.iconClass, player.colorClass);
     squareEl.replaceChildren(icon);
   }
 
   setTurnIndicator(player) {
     const icon = document.createElement("i");
     const label = document.createElement("p");
-    icon.classList.add("fa-solid");
-    icon.classList.add(player === 1 ? "fa-x" : "fa-o");
 
-    this.$.turn.classList.add(player === 1 ? "yellow" : "turquoise");
-    this.$.turn.classList.remove(player === 1 ? "turquoise" : "yellow");
+    icon.classList.add("fa-solid", player.colorClass, player.iconClass);
 
-    label.innerText =
-      player === 1 ? "Player 1, you are up" : "Player 2, you are up";
+    label.classList.add(player.colorClass);
+
+    label.innerText = `${player.name} you're up!`;
 
     this.$.turn.replaceChildren(icon, label);
   }
