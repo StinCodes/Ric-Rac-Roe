@@ -145,22 +145,22 @@ const App = {
 const players = [
   {
     id: 1,
-    name: 'Player 1',
-    iconClass: 'fa-x',
-    colorClass: 'turquoise'
+    name: "Player 1",
+    iconClass: "fa-x",
+    colorClass: "turquoise",
   },
   {
     id: 2,
-    name: 'Player 2',
-    iconClass: 'fa-x',
-    colorClass: 'yellow'
-  }
-]
+    name: "Player 2",
+    iconClass: "fa-o",
+    colorClass: "yellow",
+  },
+];
 
 function init() {
   const view = new View();
-  const store = new Store()
-  console.log(store.game)
+  const store = new Store(players);
+  console.log(store.game);
 
   view.bindGameResetEvent((event) => {
     console.log("Reset event");
@@ -170,9 +170,20 @@ function init() {
     console.log("New round event");
     console.log(event);
   });
-  view.bindPlayerMoveEvent((event) => {
-    view.setTurnIndicator(players[1]);
-    view.handlePlayerMove(event.target, players[1])
+
+  view.bindPlayerMoveEvent((square) => {
+
+    const existingMove = store.game.moves.find(move => move.squareId === +square.id)
+
+    if(existingMove){
+      return
+    }
+    //put current player icon in square
+    view.handlePlayerMove(square, store.game.currentPlayer);
+    //adv to next state by pushing move to moves
+    store.playerMove(+square.id);
+    //set players next turn indicator
+    view.setTurnIndicator(store.game.currentPlayer);
   });
 }
 

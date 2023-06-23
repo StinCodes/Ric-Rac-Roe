@@ -1,14 +1,35 @@
 //represents Model
 const initialValue = {
-  moves: []
-}
+  moves: [],
+};
 
 export default class Store {
-  #state = initialValue
-  constructor() {}
+  #state = initialValue;
+  constructor(players) {
+    this.players = players;
+  }
 
-  get game (){
-    return 'dummy value'
+  get game() {
+    const state = this.#getState();
+
+    //determines who is up by %2 on the # of moves
+    const currentPlayer = this.players[state.moves.length % 2];
+
+    return {
+      currentPlayer,
+      moves: state.moves
+    };
+  }
+
+  playerMove(squareId) {
+    const state = this.#getState();
+
+    const stateClone = structuredClone(state);
+    stateClone.moves.push({
+      squareId,
+      player: this.game.currentPlayer,
+    });
+    this.#saveState(stateClone);
   }
 
   #getState() {
@@ -20,14 +41,14 @@ export default class Store {
     let newState;
     switch (typeof stateOrFn) {
       case "function":
-        newState = stateOrFn(prevState)
+        newState = stateOrFn(prevState);
         break;
       case "object":
-        newState = stateOrFn
+        newState = stateOrFn;
         break;
       default:
         throw new Error("Invalid argument passed to saveState");
     }
-    this.#state = newState
+    this.#state = newState;
   }
 }
