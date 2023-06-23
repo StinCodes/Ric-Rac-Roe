@@ -172,16 +172,26 @@ function init() {
   });
 
   view.bindPlayerMoveEvent((square) => {
+    const existingMove = store.game.moves.find(
+      (move) => move.squareId === +square.id
+    );
 
-    const existingMove = store.game.moves.find(move => move.squareId === +square.id)
-
-    if(existingMove){
-      return
+    if (existingMove) {
+      return;
     }
     //put current player icon in square
     view.handlePlayerMove(square, store.game.currentPlayer);
     //adv to next state by pushing move to moves
     store.playerMove(+square.id);
+    //Check if game has ended
+    if (store.game.status.isComplete) {
+      view.openModal(
+        store.game.status.winner
+          ? `${store.game.status.winner.name} wins!`
+          : "Its a Tie!"
+      );
+      return;
+    }
     //set players next turn indicator
     view.setTurnIndicator(store.game.currentPlayer);
   });

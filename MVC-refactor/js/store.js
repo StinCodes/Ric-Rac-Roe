@@ -9,15 +9,43 @@ export default class Store {
     this.players = players;
   }
 
+  //function for game logic - turn indicator, win/loss(end game), records moves
   get game() {
     const state = this.#getState();
 
-    //determines who is up by %2 on the # of moves
+    //determines whose turn it is by %2 on the # of moves
     const currentPlayer = this.players[state.moves.length % 2];
+
+    const winningPatterns = [
+      [1, 2, 3],
+      [1, 5, 9],
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 5, 7],
+      [3, 6, 9],
+      [4, 5, 6],
+      [7, 8, 9],
+    ];
+    let winner = null;
+    for (const player of this.players) {
+      const selectedSquareIds = state.moves
+        .filter((move) => move.player.id === player.id)
+        .map((move) => move.squareId);
+
+        for (const pattern of winningPatterns){
+          if(pattern.every(v => selectedSquareIds.includes(v))){
+            winner = player
+          }
+        }
+    }
 
     return {
       currentPlayer,
-      moves: state.moves
+      moves: state.moves,
+      status: {
+        isComplete: winner != null || state.moves.length === 9,
+        winner
+      }
     };
   }
 
