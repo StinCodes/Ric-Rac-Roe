@@ -41,6 +41,11 @@ export default class View {
   closeModal(message){
     this.$.modal.classList.add('hidden')
   }
+  clearMoves(){
+    this.$$.squares.forEach(square =>{
+      square.replaceChildren()
+    })
+  }
 
   #toggleMenu() {
     this.$.menuItems.classList.toggle("hidden");

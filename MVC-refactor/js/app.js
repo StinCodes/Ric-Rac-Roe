@@ -165,8 +165,10 @@ function init() {
   view.bindGameResetEvent((event) => {
     view.closeModal()
     store.reset()
+    view.clearMoves()
     view.setTurnIndicator(players[0])
     // view.setTurnIndicator(store.game.currentPlayer)
+
   });
   view.bindNewRoundEvent((event) => {
     console.log("New round event");
