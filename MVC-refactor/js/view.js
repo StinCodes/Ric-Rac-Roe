@@ -38,8 +38,21 @@ export default class View {
     this.$.modal.classList.remove('hidden')
     this.$.modalText.innerText = message
   }
-  closeModal(message){
+
+  closeAll(){
+    this.#closeModal()
+    this.#closeMenu()
+  }
+  #closeModal(message){
     this.$.modal.classList.add('hidden')
+  }
+  #closeMenu(){
+    this.$.menuItems.classList.add('hidden')
+    this.$.menuBtn.classList.remove('border')
+
+    const icon = this.$.menuBtn.querySelector('i')
+    icon.classList.toggle('fa-chevron-down')
+    icon.classList.toggle('fa-chevron-up')
   }
   clearMoves(){
     this.$$.squares.forEach(square =>{
