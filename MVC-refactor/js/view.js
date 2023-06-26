@@ -22,6 +22,7 @@ export default class View {
   // Register all event listeners
   bindGameResetEvent(handler) {
     this.$.resetBtn.addEventListener("click", handler);
+    this.$.modalBtn.addEventListener('click', handler)
   }
   bindNewRoundEvent(handler) {
     this.$.newRoundBtn.addEventListener("click", handler);
@@ -31,10 +32,14 @@ export default class View {
       square.addEventListener("click", ()=>handler(square));
     });
   }
+
   //DOM helper methods
   openModal(message){
     this.$.modal.classList.remove('hidden')
     this.$.modalText.innerText = message
+  }
+  closeModal(message){
+    this.$.modal.classList.add('hidden')
   }
 
   #toggleMenu() {
